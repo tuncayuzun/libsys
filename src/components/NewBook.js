@@ -8,7 +8,9 @@ class NewBook extends Component {
 
         this.state = {
             bookName: '',
-            author:''
+            author:'',
+            isbn:'',
+            publisher:''
         }
     }
 
