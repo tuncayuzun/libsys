@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardTitle, CardBody, Row, Col, Label, Input, Button} from "reactstrap";
+import { Col, Label, Input, Button, Form, FormGroup, Container} from "reactstrap";
 
 class NewBook extends Component {
 
@@ -30,35 +30,35 @@ class NewBook extends Component {
 
         const {bookName}=this.state;
         return (
-            <div>
-                <Card>
-                    <CardTitle style={{backgroundColor: '#f1f1f1'}}>
-                        New Book
-                    </CardTitle>
-                    <CardBody>
-                        <Row>
-                            <Label  sm="2" size="md">Book Name</Label>
-                            <Col>
-                                <Input type="text" name="bookName" onChange={e=>this.handleBook(e)} />
-                            </Col>
-                        </Row>
-                        <br/>
-                        <Row>
-                            <Label  sm="2" size="md">Author</Label>
-                            <Col>
-                                <Input type="text" name="author" onChange={e=>this.handleBook(e)} />
-                            </Col>
-                        </Row>
-                        <br/>
-                        <Row>
-                            <Col>
-                                <Button color="primary" size="md" onClick={this.saveNewBook}>Save</Button>
-                            </Col>
-                        </Row>
-                    </CardBody>
-
-                </Card>
-            </div>
+            <Container>
+                <Form>
+                    <FormGroup row>
+                        <Label sm="2">Book Name</Label>
+                        <Col sm="10">
+                            <Input type="text" name="bookName" />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label  sm="2">Author</Label>
+                        <Col sm="10">
+                            <Input type="text" name="author"/>
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label sm="2">ISBN</Label>
+                        <Col sm="10">
+                            <Input type="number" name="isbn" />
+                        </Col>
+                    </FormGroup>
+                    <FormGroup row>
+                        <Label sm="2">Publisher</Label>
+                        <Col sm="10">
+                            <Input type="text" name="publisher" />
+                        </Col>
+                    </FormGroup>
+                    <Button color="primary">Save</Button>
+                </Form>
+            </Container>
         );
     }
 }
