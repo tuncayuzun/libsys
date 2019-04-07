@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Header from "./layout/Header";
-import NewBook from "./components/NewBook";
+import AddBook from "./components/AddBook";
 
 class App extends Component {
   render() {
@@ -11,7 +11,7 @@ class App extends Component {
         <Header name="LIB SYS"/>
         <br/>
         <div className="container">
-            <NewBook/>
+            <AddBook/>
         </div>
       </div>
     );
