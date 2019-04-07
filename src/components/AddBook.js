@@ -6,6 +6,7 @@ import Datetime from "react-datetime";
 import 'react-datetime/css/react-datetime.css';
 import {bookTypeOptions} from "../helper/options";
 import ButtonGroup from "reactstrap/es/ButtonGroup";
+import { Alert } from 'reactstrap';
 
 let bookList = [];
 
@@ -20,12 +21,12 @@ class AddBook extends Component {
             bookType: '',
             isbn: '',
             publicationDate: '',
-            publisher: ''
+            publisher: '',
+            isNotValidateForm:false
         }
     }
 
     handleInput = e => {
-
         const name = e.target.name;
         console.log("name: " + name);
         this.setState({
@@ -34,13 +35,11 @@ class AddBook extends Component {
     }
 
     handleSelect = selectedItem => {
-
         if (selectedItem !== null) {
             const name = selectedItem.type;
             this.setState({
-                [name]: selectedItem.Label
+                [name]: selectedItem.value 
             });
-
         }
     }
 
@@ -60,7 +59,8 @@ class AddBook extends Component {
             bookType: '',
             isbn: '',
             publicationDate: '',
-            publisher: ''
+            publisher: '',
+            isNotValidateForm:false
         })
 
         this.forceUpdate();
@@ -74,7 +74,25 @@ class AddBook extends Component {
         this.forceUpdate();
     }
 
+
+    validateForm = () => {
+        const {bookName,author,bookType,isbn,publicationDate,publisher} = this.state;
+        if (bookName === "" || author === "" || bookType === "" ||isbn===""||publicationDate==="" ||publisher==="" ) {
+            return false;
+        }
+        return true;
+        
+    }
+
     saveNewBook = () => {
+        if (!this.validateForm()) {
+            this.setState({
+                isNotValidateForm :true
+            })
+            return;
+        }
+
+
         bookList.push(
             {
                 bookName: this.state.bookName,
@@ -86,21 +104,26 @@ class AddBook extends Component {
             }
         );
 
-        console.log(bookList);
-        //this.clearForm();
         this.forceUpdate();
-
+        
     }
-
 
     render() {
 
-        const {bookName, author, bookType, isbn, publicationDate, publisher} = this.state;
+        const {bookName, author, bookType, isbn, publicationDate, publisher,isNotValidateForm} = this.state;
         return (
             <Container>
                 <Jumbotron>
                     <h1 className="display-6">Add New Book</h1>
                     <Form>
+                    {
+                                isNotValidateForm ? 
+                                <Alert color="danger">
+                                 Please check your input values
+                               </Alert>
+                                 :null
+                             }
+
                         <FormGroup row>
                             <Label sm="2">Book Name</Label>
                             <Col sm="10">
