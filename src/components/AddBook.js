@@ -127,6 +127,13 @@ class AddBook extends Component {
 
     }
 
+    componentDidUpdate(prevProps, prevState) {
+
+        if(prevState.bookName !== this.state.bookName){
+            localStorage.setItem('bookName', this.state.bookName);
+        }
+    }
+
 
     render() {
 
