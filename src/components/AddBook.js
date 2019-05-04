@@ -20,28 +20,29 @@ class AddBook extends Component {
             bookType: '',
             isbn: '',
             publicationDate: '',
-            publisher: ''
+            publisher: '',
+            validationErrors: {}
         }
     }
 
     handleInput = e => {
 
         const name = e.target.name;
-        console.log("name: " + name);
         this.setState({
             [name]: e.target.value
         });
     }
 
     handleSelect = selectedItem => {
-
         if (selectedItem !== null) {
             const name = selectedItem.type;
             this.setState({
-                [name]: selectedItem.Label
+                [name]: selectedItem
             });
-
         }
+
+        this.forceUpdate();
+
     }
 
     handleDate = selectedDate => {
@@ -60,42 +61,76 @@ class AddBook extends Component {
             bookType: '',
             isbn: '',
             publicationDate: '',
-            publisher: ''
+            publisher: '',
+            validationErrors: {}
         })
 
         this.forceUpdate();
     }
 
     deleteBook = bookId => {
-        console.log(bookId)
         bookList = bookList.filter(book => bookList.indexOf(book) !== bookId);
-        console.log(bookList);
-
         this.forceUpdate();
     }
 
     saveNewBook = () => {
-        bookList.push(
-            {
-                bookName: this.state.bookName,
-                author: this.state.author,
-                bookType: this.state.bookType,
-                isbn: this.state.isbn,
-                publicationDate: this.state.publicationDate,
-                publisher: this.state.publisher
-            }
-        );
 
-        console.log(bookList);
-        //this.clearForm();
+       const isFormValid = this.validateFields();
+       if(isFormValid) {
+           bookList.push(
+               {
+                   bookName: this.state.bookName,
+                   author: this.state.author,
+                   bookType: this.state.bookType.label,
+                   isbn: this.state.isbn,
+                   publicationDate: this.state.publicationDate,
+                   publisher: this.state.publisher
+               }
+           );
+       }
+
         this.forceUpdate();
+
+    }
+
+    validateFields= () => {
+        const {bookName, author, bookType, isbn, publicationDate, publisher} = this.state;
+
+        const errors = {}
+
+        if (!bookName) {
+            errors['bookName'] = 'Book name cannot be empty!';
+        }
+        if (!author) {
+            errors['author'] = 'Author cannot be empty!';
+        }
+
+        if (!bookType) {
+            errors['bookType'] = 'Book type cannot be empty!';
+        }
+
+        if (!isbn) {
+            errors['isbn'] = 'ISBN cannot be empty!';
+        }
+
+        if (!publicationDate) {
+            errors['publicationDate'] = 'Publication date cannot be empty!';
+        }
+
+        if (!publisher) {
+            errors['publisher'] = 'Publisher cannot be empty!';
+        }
+
+        this.setState({validationErrors: errors});
+
+        return Object.keys(errors).length === 0;
 
     }
 
 
     render() {
 
-        const {bookName, author, bookType, isbn, publicationDate, publisher} = this.state;
+        const {bookName, author, bookType, isbn, publicationDate, publisher, validationErrors} = this.state;
         return (
             <Container>
                 <Jumbotron>
@@ -107,11 +142,17 @@ class AddBook extends Component {
                                 <Input type="text" name="bookName" value={bookName}
                                        onChange={(e) => this.handleInput(e)}/>
                             </Col>
+                            <Col>
+                                <span style={{color: "red"}}>{validationErrors.bookName}</span>
+                            </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Label sm="2">Author</Label>
                             <Col sm="10">
                                 <Input type="text" name="author" value={author} onChange={(e) => this.handleInput(e)}/>
+                            </Col>
+                            <Col>
+                                <span style={{color: "red"}}>{validationErrors.author}</span>
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -125,11 +166,17 @@ class AddBook extends Component {
                                     onChange={this.handleSelect}
                                 />
                             </Col>
+                            <Col>
+                                <span style={{color: "red"}}>{validationErrors.bookType}</span>
+                            </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Label sm="2">ISBN</Label>
                             <Col sm="10">
                                 <Input type="number" name="isbn" value={isbn} onChange={(e) => this.handleInput(e)}/>
+                            </Col>
+                            <Col>
+                                <span style={{color: "red"}}>{validationErrors.isbn}</span>
                             </Col>
                         </FormGroup>
                         <FormGroup row>
@@ -143,12 +190,18 @@ class AddBook extends Component {
                                     onChange={this.handleDate}
                                 />
                             </Col>
+                            <Col>
+                                <span style={{color: "red"}}>{validationErrors.publicationDate}</span>
+                            </Col>
                         </FormGroup>
                         <FormGroup row>
                             <Label sm="2">Publisher</Label>
                             <Col sm="10">
                                 <Input type="text" name="publisher" value={publisher}
                                        onChange={(e) => this.handleInput(e)}/>
+                            </Col>
+                            <Col>
+                                <span style={{color: "red"}}>{validationErrors.publisher}</span>
                             </Col>
                         </FormGroup>
                         <hr className="my-2"/>
